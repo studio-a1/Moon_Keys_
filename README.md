@@ -22,3 +22,6 @@ O autor não se responsabiliza por danos diretos ou indiretos resultantes do uso
 Para pedidos de uso, colaboração ou esclarecimentos, entre em contato com o autor:
 j.webmass@gmail.com
 
+Para acessar o site:
+https://moon-keys.netlify.app/
+
