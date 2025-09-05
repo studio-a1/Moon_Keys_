@@ -1,69 +1,24 @@
-# React + TypeScript + Vite
+Moon Keys - LICENSE
+Copyright (c) 2025 Julio C P Silva
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Todos os direitos reservados.
 
-Currently, two official plugins are available:
+Este software, denominado **Moon Keys**, é protegido por leis nacionais e internacionais de direitos autorais e propriedade intelectual.  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Uso e Distribuição
+- O uso, cópia, modificação ou redistribuição total ou parcial deste código só é permitido **mediante autorização expressa do autor**.  
+- Qualquer uso não autorizado constitui violação dos direitos autorais, sujeito às penalidades legais cabíveis.  
+- Projetos derivados, forks ou implementações comerciais devem solicitar permissão prévia ao autor.
 
-## Expanding the ESLint configuration
+## Autoridade Autoral
+O autor original deste projeto é **Julio C P Silva**, responsável pela criação, desenvolvimento e manutenção do código.  
+Todo uso do código deve manter este aviso de autoria e referência ao repositório original.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Aviso Legal
+Este software é disponibilizado **"como está"**, sem garantias de qualquer tipo, expressas ou implícitas.  
+O autor não se responsabiliza por danos diretos ou indiretos resultantes do uso deste software.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Contato
+Para pedidos de uso, colaboração ou esclarecimentos, entre em contato com o autor:
+j.webmass@gmail.com
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
