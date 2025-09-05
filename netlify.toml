@@ -1,0 +1,5 @@
+# Configuração para o deploy na Netlify
+
+[build]
+  # Informa à Netlify onde encontrar as funções serverless (como o nosso proxy)
+  functions = "netlify/functions/"

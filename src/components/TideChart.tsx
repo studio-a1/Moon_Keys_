@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Label, Scatter, ReferenceArea } from 'recharts';
-import { TideChartResponse, TideExtremes, ShortCyclePeriod, TideDataPoint } from '../types';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Label, Scatter } from 'recharts';
+import type { TideChartResponse, TideExtremes, ShortCyclePeriod, TideDataPoint } from '../types';
 import { Waves, Anchor } from 'lucide-react';
 import Loader from './Loader';
 
@@ -122,7 +122,7 @@ const ExtremesDisplay: React.FC<{ extremes: TideExtremes }> = ({ extremes }) => 
     );
 }
 
-const ShortCycleDisplay: React.FC<{ periods: ShortCyclePeriod[], timezoneOffsetName: string }> = ({ periods, timezoneOffsetName }) => {
+const ShortCycleDisplay: React.FC<{ periods: ShortCyclePeriod[] }> = ({ periods }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const CustomTooltip: React.FC<any> = ({ active, payload, label }) => {
     const time = new Date(label);
     const timeStr = formatLocalTime(time);
     const dateStr = time.toLocaleDateString('pt-BR', {weekday: 'long', day: 'numeric', month: 'short'});
-    const tideHeight = payload.find(p => p.dataKey === 'height');
+    const tideHeight = payload.find((p: any) => p.dataKey === 'height');
 
     return (
       <div className="bg-slate-800/80 backdrop-blur-sm p-2 border border-slate-600 rounded-md shadow-lg text-sm">
@@ -187,7 +187,7 @@ const ExtremePoint: React.FC<any> = (props) => {
 };
 
 const ExtremeLabel: React.FC<any> = (props) => {
-    const { x, y, value, payload } = props;
+    const { x, y, payload } = props;
     if (!x || !y) return null;
     const time = new Date(payload.time);
     return (
@@ -254,10 +254,9 @@ const CustomXAxisTick: React.FC<any> = (props) => {
 
 interface TideChartProps {
   tideInfo: TideChartResponse;
-  timezoneOffsetName: string;
 }
 
-const TideChart: React.FC<TideChartProps> = ({ tideInfo, timezoneOffsetName }) => {
+const TideChart: React.FC<TideChartProps> = ({ tideInfo }) => {
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
 
     useEffect(() => {
@@ -367,7 +366,7 @@ const TideChart: React.FC<TideChartProps> = ({ tideInfo, timezoneOffsetName }) =
                 </ResponsiveContainer>
             </div>
             
-            <ShortCycleDisplay periods={shortCyclePeriods} timezoneOffsetName={timezoneOffsetName} />
+            <ShortCycleDisplay periods={shortCyclePeriods} />
             <ExtremesDisplay extremes={extremes} />
         </div>
     );

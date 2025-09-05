@@ -1,5 +1,5 @@
 
-import { MoonPhaseName, LunarCycle, CycleUnit, MoonPhaseInfo } from '../types';
+import { MoonPhaseName, type LunarCycle, type CycleUnit, type MoonPhaseInfo } from '../types';
 import SunCalc from 'suncalc';
 
 const LUNATION_PERIOD_MS = 29.530588853 * 24 * 60 * 60 * 1000;

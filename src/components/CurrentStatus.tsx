@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle2, XCircle, ArrowRight, Sun, Moon, Calendar, Clock, Star } from 'lucide-react';
-import { LunarCycle, TideChartResponse } from '../types';
+import type { LunarCycle, TideChartResponse } from '../types';
 
 const getPolarityClasses = (polarity: string | undefined, type: 'bg' | 'text' | 'border' | 'icon') => {
     switch (polarity) {
@@ -160,7 +160,7 @@ const CurrentStatus: React.FC<CurrentStatusProps> = ({ lunarCycle, tideInfo }) =
 
     const getCombinedPolarity = (): string => {
         if (!shortPolarity) {
-            return longPolarity; // Fallback if short cycle is somehow undefined
+            return longPolarity || 'Neutra'; // Fallback if short cycle is undefined or longPolarity is undefined
         }
         if (longPolarity === 'Revigorante' && shortPolarity === 'Revigorante') {
             return 'Muito Revigorante';
@@ -196,7 +196,7 @@ const CurrentStatus: React.FC<CurrentStatusProps> = ({ lunarCycle, tideInfo }) =
                 </div>
             </div>
             
-            <PracticalGuide longPolarity={longPolarity} shortPolarity={shortPolarity} />
+            {longPolarity && <PracticalGuide longPolarity={longPolarity} shortPolarity={shortPolarity} />}
             
             <p className="text-xs text-slate-500 mt-8 pt-4 border-t border-slate-700/50 text-center italic">
               "As unidades longas... têm a sua maior influência no funcionamento puramente fisiológico... As unidades curtas têm o seu maior efeito nas funções mentais, psíquicas, nervosas..."

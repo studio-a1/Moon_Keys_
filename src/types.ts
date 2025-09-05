@@ -1,14 +1,17 @@
 
-export enum MoonPhaseName {
-  NEW_MOON = 'Lua Nova',
-  WAXING_CRESCENT = 'Lua Crescente',
-  FIRST_QUARTER = 'Quarto Crescente',
-  WAXING_GIBBOUS = 'Gibosa Crescente',
-  FULL_MOON = 'Lua Cheia',
-  WANING_GIBBOUS = 'Gibosa Minguante',
-  THIRD_QUARTER = 'Quarto Minguante',
-  WANING_CRESCENT = 'Lua Minguante',
-}
+export const MoonPhaseName = {
+  NEW_MOON: 'Lua Nova',
+  WAXING_CRESCENT: 'Lua Crescente',
+  FIRST_QUARTER: 'Quarto Crescente',
+  WAXING_GIBBOUS: 'Gibosa Crescente',
+  FULL_MOON: 'Lua Cheia',
+  WANING_GIBBOUS: 'Gibosa Minguante',
+  THIRD_QUARTER: 'Quarto Minguante',
+  WANING_CRESCENT: 'Lua Minguante',
+} as const;
+
+export type MoonPhaseName = typeof MoonPhaseName[keyof typeof MoonPhaseName];
+
 
 export interface MoonPhaseInfo {
   phase: MoonPhaseName;

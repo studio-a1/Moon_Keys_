@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { LunarCycle } from '../types';
+import type { LunarCycle } from '../types';
 
 const formatDate = (date: Date, timezoneOffsetName: string) => {
     const localDateTime = date.toLocaleString('pt-BR', {

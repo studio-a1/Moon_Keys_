@@ -1,7 +1,5 @@
 import { Coordinates, TideDataPoint, TideExtremes, ShortCyclePeriod, TideChartResponse } from '../types';
 
-const WORLD_TIDES_API_KEY = '9D64977D-E93F-439B-8BF5-4DEE96F1261D';
-
 /**
  * Calculates the short cycle periods based on the alternating logic.
  * The period between any two tide extremes (high-low or low-high) is split in half.
@@ -50,41 +48,35 @@ function calculateShortCyclePeriods(extremes: TideExtremes): ShortCyclePeriod[] 
 
 
 /**
- * Fetches real tide data from the WorldTides.info API.
+ * Fetches real tide data by calling our Netlify serverless function proxy.
  */
 export async function getRealTideData(coords: Coordinates, chartStart: Date, chartEnd: Date): Promise<TideChartResponse> {
     const durationMs = chartEnd.getTime() - chartStart.getTime();
     const durationDays = Math.ceil(durationMs / (1000 * 60 * 60 * 24));
     
-    // WorldTides API uses a UNIX timestamp for the start date.
+    // API requires a UNIX timestamp for the start date.
     const startTimestamp = Math.floor(chartStart.getTime() / 1000);
 
     const params = new URLSearchParams({
-        key: WORLD_TIDES_API_KEY,
         lat: coords.latitude.toString(),
         lon: coords.longitude.toString(),
         start: startTimestamp.toString(),
         days: durationDays.toString(),
-        heights: 'true', // We need the hourly data for the chart
-        extremes: 'true', // We need the high/low tide points
     });
 
-    const url = `https://www.worldtides.info/api/v3?${params.toString()}`;
+    // The URL now points to our secure serverless function proxy
+    const url = `/.netlify/functions/tide-proxy?${params.toString()}`;
 
     try {
         const response = await fetch(url);
-        if (!response.ok) {
-            const errorBody = await response.json().catch(() => ({ error: response.statusText }));
-            throw new Error(`A API WorldTides retornou um erro: ${errorBody.error}`);
-        }
-        const data = await response.json();
+        const data = await response.json(); // Always expect JSON now
 
-        if (data.error) {
-            throw new Error(`A API WorldTides retornou um erro: ${data.error}`);
+        if (!response.ok || data.error) {
+            throw new Error(`A API de marés retornou um erro: ${data.error || response.statusText}`);
         }
         
         if (!data.heights || data.heights.length === 0) {
-            throw new Error("A API WorldTides não retornou dados de maré para esta localização.");
+            throw new Error("A API de marés não retornou dados para esta localização.");
         }
         
         const chartData: TideDataPoint[] = data.heights.map((h: any) => ({
@@ -116,10 +108,10 @@ export async function getRealTideData(coords: Coordinates, chartStart: Date, cha
         };
 
     } catch (error) {
-        console.error("Erro ao buscar dados da WorldTides API:", error);
+        console.error("Erro ao buscar dados da nossa API proxy:", error);
         if (error instanceof Error) {
-           throw new Error(`Falha ao buscar dados reais de marés: ${error.message}`);
+           throw new Error(`Falha ao buscar dados de marés: ${error.message}`);
         }
-        throw new Error("Falha ao buscar dados reais de marés. Verifique a chave da API ou a conexão com a internet.");
+        throw new Error("Falha ao buscar dados de marés. Verifique o status da sua implantação no Netlify.");
     }
 }

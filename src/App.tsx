@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Coordinates, LunarCycle, TideChartResponse } from './types';
+import type { Coordinates, LunarCycle, TideChartResponse } from './types';
 import { calculateLunarCycle } from './services/moonService';
 import { getRealTideData } from './services/tideService';
 import { getCityStateFromCoordinates } from './services/locationService';
@@ -9,7 +9,7 @@ import TideChart from './components/TideChart';
 import Loader from './components/Loader';
 import LunarCycleView from './components/LunarCycleView';
 import CurrentStatus from './components/CurrentStatus';
-const apiKey = import.meta.env.VITE_WORLD_TIDES_API_KEY;
+
 const App: React.FC = () => {
   const [location, setLocation] = useState<Coordinates | null>(null);
   const [locationName, setLocationName] = useState<string | null>(null);
@@ -125,7 +125,7 @@ const App: React.FC = () => {
             <CurrentStatus lunarCycle={lunarCycle} tideInfo={tideInfo} locationName={locationName} />
             
             <div className="space-y-8">
-                <TideChart tideInfo={tideInfo} timezoneOffsetName={timezoneOffsetName} />
+                <TideChart tideInfo={tideInfo} />
                 <LunarCycleView cycle={lunarCycle} timezoneOffsetName={timezoneOffsetName} />
             </div>
             

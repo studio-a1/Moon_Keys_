@@ -1,4 +1,4 @@
-import { Coordinates } from '../types';
+import type { Coordinates } from '../types';
 
 /**
  * Gets a city and state from coordinates using the OpenStreetMap Nominatim API.
