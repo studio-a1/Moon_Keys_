@@ -1,0 +1,58 @@
+export const handler = async (event) => {
+  if (!event.queryStringParameters) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Parâmetros de consulta ausentes.' }),
+    };
+  }
+
+  const { lat, lon, start, days } = event.queryStringParameters;
+
+  const API_KEY = process.env.WORLD_TIDES_API_KEY;
+
+  if (!API_KEY) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'A chave da API WorldTides não está configurada no servidor.' }),
+    };
+  }
+
+  if (!lat || !lon || !start || !days) {
+      return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Parâmetros de consulta obrigatórios ausentes: lat, lon, start, days.' })
+      };
+  }
+
+  const params = new URLSearchParams({
+    key: API_KEY,
+    lat,
+    lon,
+    start,
+    days,
+    heights: 'true',
+    extremes: 'true',
+  });
+
+  const url = `https://www.worldtides.info/api/v3?${params.toString()}`;
+
+  try {
+    const worldTidesResponse = await fetch(url);
+    const body = await worldTidesResponse.text();
+
+    return {
+      statusCode: worldTidesResponse.status,
+      headers: {
+        'Content-Type': worldTidesResponse.headers.get('Content-Type') || 'application/json',
+      },
+      body: body,
+    };
+  } catch (error) {
+    console.error("Erro ao buscar da API WorldTides:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Um erro desconhecido ocorreu.';
+    return {
+      statusCode: 502, // Bad Gateway - indica um problema com a chamada para o servidor externo
+      body: JSON.stringify({ error: `O proxy da API falhou: ${errorMessage}` }),
+    };
+  }
+};
